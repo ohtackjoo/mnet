@@ -1,0 +1,9 @@
+INDEX VERSION 1.4+C:\Users\mnet-11\Desktop\oh\wslist\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+4023723859.index
+1960007308.index
+3348335367.index
+735036888.index
+322614791.index
+2973366997.index
+3789614969.index
+2041725217.index

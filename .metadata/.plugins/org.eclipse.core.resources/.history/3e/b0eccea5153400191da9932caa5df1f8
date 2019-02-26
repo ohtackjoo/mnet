@@ -1,0 +1,15 @@
+package com.nmet.nmet.member.model;
+
+public class memberDVO {
+	 private String ID;
+	 private String USERINFODETAILCD;
+	 private String RELCD; 
+	 private int ADDRCD;
+	 private String ADDRNAME;
+	 private String MOBILETELNO;
+	 private String HOMETELNO;
+	 private String INSUSER;
+	 private String INSDATE;
+	 private String  USEYN;
+	 private String DELIVNAME;
+}

@@ -1,0 +1,97 @@
+package com.nmet.nmet.member.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.nmet.nmet.member.model.codemngVO;
+import com.nmet.nmet.member.model.itemVO;
+import com.nmet.nmet.member.model.memberService;
+
+@Controller
+public class itemListController {
+private static final Logger logger = LoggerFactory.getLogger(itemListController.class);
+	
+	@Autowired
+	private memberService service; 
+
+	@RequestMapping(value = "/member/itemList.do", method = RequestMethod.GET)
+	public String itemG(Locale locale, Model model) {		
+		logger.info("상품관리");
+		List<codemngVO> list=service.selectItem1();
+		model.addAttribute("clist",list);
+		return "/member/itemList";	
+	}
+	@RequestMapping(value = "/member/itemList.do", method = RequestMethod.POST)
+	public String itemP(Locale locale, Model model,HttpServletRequest req) {		
+		logger.info("상품관리-처리");
+		String iTEMCD=req.getParameter("itemcode");
+		String iTEMNAME=req.getParameter("itemname");
+		String mADENMCD=req.getParameter("madename");
+		String mADENAME=req.getParameter("itemunitname");
+		String itemcheck=req.getParameter("itemcheck");
+		String inorup=req.getParameter("inorup");
+		itemVO vo= new itemVO();
+		
+		String msg="";
+		String url="codemng.do";
+		if(inorup.equals("in")) {
+			logger.info("코드관리-추가");
+			int cnt=service.insertItem(vo);
+			if(cnt>0) {
+				msg="코드가 추가 되었습니다.";
+			}else {
+				msg="코드가 추가 실패.";
+			}
+		}else if(inorup.equals("up")) {
+			int cnt=service.updateItem(vo);
+			if(cnt>0) {
+				msg="코드가 수정 되었습니다.";
+			}else {
+				msg="코드가 수정 실패.";
+			}
+		}
+		model.addAttribute("msg",msg);
+		model.addAttribute("url",url);
+		
+		return "messge";
+	}
+	@RequestMapping(value = "/member/item.do", method = RequestMethod.POST,produces="application/text; charset=utf8")
+	public @ResponseBody String itemP(Locale locale, Model model,@RequestParam String code) throws Exception {		
+		logger.info("상품관리-1차분류 (ajax)");
+		List<codemngVO> list=service.selectItem2(code);
+		Map<String,Object> map = new HashMap<String,Object>();
+		logger.info("list={}",list);
+		map.put("alist",list);
+		String json = "";
+		ObjectMapper mapper = new ObjectMapper();
+		json = mapper.writeValueAsString(map);
+		return json;
+	}
+	@RequestMapping(value = "/member/item2.do", method = RequestMethod.POST,produces="application/text; charset=utf8")
+	public @ResponseBody String item2P(Locale locale, Model model,@RequestParam String code) throws Exception {		
+		logger.info("상품관리-조회 (ajax)");
+		List<itemVO> list=service.selectItem3(code);
+		Map<String,Object> map = new HashMap<String,Object>();
+		logger.info("list={}",list);
+		map.put("ilist",list);
+		String json = "";
+		ObjectMapper mapper = new ObjectMapper();
+		json = mapper.writeValueAsString(map);
+		return json;
+	}
+}

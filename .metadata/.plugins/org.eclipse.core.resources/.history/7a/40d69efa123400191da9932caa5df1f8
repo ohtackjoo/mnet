@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="config.mybatis.mapper.oracle.userinfo">
+	<select id="checkIDandPASS" resultType="memberVO" parameterType="memberVO">
+  		SELECT * FROM USERINFO WHERE ID=#{ID} AND PASS=#{PASS}
+  	</select>
+	<select id="selectByID" resultType="memberVO" parameterType="String">
+  		SELECT * FROM USERINFO WHERE ID=#{ID}
+  	</select>
+  	<insert id="insertJoin" parameterType="memberVO">
+  		INSERT INTO USERINFO VALUES( #{ID}, #{PASS}, #{NAME}, sysdate, default)
+  	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+

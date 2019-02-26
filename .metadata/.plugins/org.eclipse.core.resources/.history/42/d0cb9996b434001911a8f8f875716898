@@ -1,0 +1,9 @@
+package com.nmet.nmet.member.model;
+
+public class codemngVO {
+	private String CDNO;
+	private int CDLVL;
+	private String UPNO;
+	private String CDNAME;
+	private String USEYN;
+}

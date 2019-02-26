@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.nmet.nmet.controller.empListController"/>
+<fullyQualifiedTypeName name="org.mybatis.spring.SqlSessionTemplate"/>
+<fullyQualifiedTypeName name="java.lang.StrictMath"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.model.empDAO"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.model.empVO"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.model.empService"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.controller.loginController"/>
+<fullyQualifiedTypeName name="javax.annotation.Resource"/>
+<fullyQualifiedTypeName name="org.springframework.stereotype.Repository"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.model.memberDAO"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.controller.mainController"/>
+<fullyQualifiedTypeName name="org.springframework.web.servlet.mvc.support.RedirectAttributes"/>
+<fullyQualifiedTypeName name="org.junit.runner.Request"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.springframework.ui.Model"/>
+<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.model.memberService"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.model.memberServiceimpl"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ResponseBody"/>
+<fullyQualifiedTypeName name="javax.servlet.http.HttpServletResponse"/>
+<fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
+<fullyQualifiedTypeName name="java.net.URLEncoder"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.model.memberVO"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.controller.detailController"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.model.memberDetailVO"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.model.memberDVO"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.controller.codemngController"/>
+<fullyQualifiedTypeName name="org.springframework.validation.BindingResult"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.model.codemngVO"/>
+<fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.controller.insitemlistController"/>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="org.springframework.transaction.annotation.Transactional"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.nmet.nmet.member.model.itemVO"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="org.codehaus.jackson.map.ObjectMapper"/>
+<fullyQualifiedTypeName name="javax.servlet.http.HttpServletRequest"/>
+</qualifiedTypeNameHistroy>

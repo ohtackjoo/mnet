@@ -1,0 +1,11 @@
+package com.nmet.nmet.member.model;
+
+public class memberDetailVO {
+	private String CDNO; 
+	private int CDLVL;
+	private String UPCD;
+	private String CDNAME;
+	private String INSUSER;
+	private String INSDATE;
+	private String USEYN;
+}

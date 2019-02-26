@@ -1,0 +1,62 @@
+package com.nmet.nmet.member.model;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class memberServiceimpl implements memberService{
+	@Autowired
+	private memberDAO dao;
+
+	@Override
+	public memberVO checkIDandPASS(memberVO vo)  {
+		return dao.checkIDandPASS(vo);
+	}
+
+	@Override
+	public memberVO selectByID(String ID) {
+		return dao.selectByID(ID);
+	}
+
+	@Override
+	public int insertJoin(memberVO vo) {
+		return dao.insertJoin(vo);
+	}
+
+	@Override
+	public List<memberDetailVO> selectDetail() {
+		return dao.selectDetail();
+	}
+
+	@Override
+	public int insertDetail(memberDVO vo) {
+		return dao.insertDetail(vo);
+	}
+
+	@Override
+	public List<codemngVO> selectCodeMng() {
+		return dao.selectCodeMng();
+	}
+
+	@Override
+	public int updateCode(codemngVO vo) {
+		return dao.updateCode(vo);
+	}
+
+	@Override
+	public int insertCode(codemngVO vo) {
+		return dao.insertCode(vo);
+	}
+
+	@Override
+	public List<codemngVO> selectItem1() {
+		return dao.selectItem1();
+	}
+
+	@Override
+	public List<codemngVO> selectItem2(String code) {
+		return null;
+	}
+}

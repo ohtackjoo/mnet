@@ -1,0 +1,5 @@
+package com.nmet.nmet.member.model;
+
+public class memberDVO {
+
+}

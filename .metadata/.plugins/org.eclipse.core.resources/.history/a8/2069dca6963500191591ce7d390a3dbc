@@ -1,0 +1,6 @@
+package com.nmet.nmet.member.model;
+
+public class itemVO {
+	 ITEMCD, ITEMNAME, MADENMCD, ITEMUNITCD, STOCKAMT, STOCKYN, USEYN;
+	 String
+}

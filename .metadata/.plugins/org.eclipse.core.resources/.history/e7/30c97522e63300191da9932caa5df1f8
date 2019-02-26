@@ -1,0 +1,64 @@
+package com.nmet.nmet.member.controller;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.nmet.nmet.member.model.memberService;
+import com.nmet.nmet.member.model.memberVO;
+
+
+@Controller
+public class loginController {
+	private static final Logger logger = LoggerFactory.getLogger(loginController.class);
+	
+	@Autowired
+	private memberService service; 
+
+	@RequestMapping(value = "/member/login.do", method = RequestMethod.GET)
+	public String loginG(Locale locale, Model model) {		
+		logger.info("유저로그인");
+
+		return "/member/login";	
+	}
+	@RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
+	public String loginP(Locale locale, Model model,HttpServletRequest request) {		
+		logger.info("유저로그인");
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		String userid=request.getParameter("userid");
+		String userPwd=request.getParameter("userPwd");
+		logger.info(userid+" ///// "+userPwd);
+		memberVO vo=new memberVO();
+		vo.setID(userid);
+		vo.setPASS(userPwd);
+		logger.info("vo={}",vo);
+		memberVO Cvo=service.checkIDandPASS(vo);
+		logger.info("src={}",src);
+		String msg="";
+		String url="";
+		if(Cvo!=null) {
+			msg=Cvo.getNAME()+"님 로그인 되셨습니다.";
+			url="main.do";
+		}else {
+			msg="회원정보가 잘못 입력 되었습니다.";
+			url="login.do";
+		}
+	    model.addAttribute("msg",msg);
+		model.addAttribute("url",msg);
+		
+		return "redirect:"+src;
+	}
+}

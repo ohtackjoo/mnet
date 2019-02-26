@@ -1,0 +1,19 @@
+package com.nmet.nmet.member.model;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface memberDAO {
+	public memberVO checkIDandPASS(memberVO vo) ;
+	public memberVO selectByID(String ID);
+	public int insertJoin(memberVO vo);
+	public List<memberDetailVO> selectDetail();
+	public int insertDetail(memberDVO vo);
+	public List<codemngVO> selectCodeMng();
+	public int insertCode(codemngVO vo);
+	public int updateCode(codemngVO vo);
+	public List<codemngVO> selectItem1();
+	public List<codemngVO> selectItem2();
+}

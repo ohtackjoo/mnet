@@ -1,0 +1,8 @@
+package com.nmet.nmet.member.model;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface memberDAO {
+	public memberVO checkIDandPASS(memberVO vo) ;
+}

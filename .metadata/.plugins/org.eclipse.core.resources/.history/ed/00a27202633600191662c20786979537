@@ -1,0 +1,220 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#codeSel").change(function(){    
+			var code=$(this).val();
+			console.log(code);
+			$.ajax({
+				type:"post",
+				url:"item.do",
+				data:{'code':code},
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				dataType : "json",
+				success:function(data){
+		            console.log(data);
+		            if(data==null){
+		            	data=0;
+		            }
+		            console.log(data.alist.length);
+		            console.log(data.alist[0].cdno);
+		            $("#ajaxsel option").remove();
+		            for(var i=0;i<data.alist.length;i++){
+		            	console.log(i);
+		            	var cdno=decodeURIComponent(data.alist[i].cdno);
+		            	var cdname=decodeURIComponent(data.alist[i].cdname);
+		            	console.log("cdno === " + data.alist[i].cdno);
+		            	console.log("cdname === " + data.alist[i].cdname);
+		            	$("#ajaxsel").append("<option value="+cdno+">"+cdname+"</option>");
+		            }
+		            console.log("success");
+		        },
+		        error: function (XMLHttpRequest, textStatus, errorThrown){
+		            alert('서버와의 통신이 원할하지 않습니다.\n다시 시도 해 주십시오.' );
+		        }
+			});
+			
+			//
+			$("#itemselect").click(function(){    
+			$("#itemFrom").hide();
+				var code=$("#ajaxsel option:selected").val();
+				console.log(code);
+				$.ajax({
+					type:"post",
+					url:"item2.do",
+					data:{'code':code},
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					dataType : "json",
+					success:function(data){
+			            console.log(data);
+			            if(data==null){
+			            	data=0;
+			            }
+			            console.log(data.ilist.length);
+			            $("#itemsel").find("td").remove();
+			            $("#itemsel tbody").find("tr").remove();
+
+			            for(var i=0;i<data.ilist.length;i++){
+			            	var cdno=decodeURIComponent(data.ilist[i]);
+			            	console.log("data.ilist === " + data.ilist[i]);
+			            	var tr="<tr class='itemtr'>";
+			            		tr+="<td>"+data.ilist[i].itemcd+"</td>";
+			            		tr+="<td>"+data.ilist[i].itemname+"</td>";
+			            		tr+="<td>"+data.ilist[i].madenmcd+"</td>";
+			            		tr+="<td>"+data.ilist[i].madename+"</td>";
+			            		tr+="<td>"+data.ilist[i].itemunitcd+"</td>";
+			            		tr+="<td>"+data.ilist[i].itemunitname+"</td>";
+			            		tr+="<td>"+data.ilist[i].stockamt+"</td>";
+			            		if(data.ilist[i].stockyn=="Y"){
+			            			tr+="<td><input type='checkbox' checked='checked'></td>";
+		            			}else{
+		            				tr+="<td><input type='checkbox'></td>";
+		            			}
+		            			if(data.ilist[i].useyn=="Y"){
+		            				tr+="<td><input type='checkbox' checked='checked'></td>";
+		            			}else{
+		            				tr+="<td><input type='checkbox'></td>";
+		            			}
+		            			tr+="</tr>";
+			            	$("#itemsel tbody").append(tr);
+			            }
+			            console.log("success");
+			        },
+			        error: function (XMLHttpRequest, textStatus, errorThrown){
+			            alert('서버와의 통신이 원할하지 않습니다.\n다시 시도 해 주십시오.' );
+			        }
+				});
+			});
+		});
+		
+		$("#itemFrom").hide();
+		$(document).on('click','.itemtr', function(){
+			$("#itemFrom").show();
+			var itemcd=$(this).find("td:eq(0)").html();
+			var itemname=$(this).find("td:eq(1)").html();
+			var madenmcd=$(this).find("td:eq(2)").html();
+			var madename=$(this).find("td:eq(3)").html();
+			var itemunitcd=$(this).find("td:eq(4)").html();
+			var itemunitname=$(this).find("td:eq(5)").html();
+			var stockamt=$(this).find("td:eq(6)").html();
+			var stockyn=$(this).find("td:eq(7)").html();
+			var useyn=$(this).find("td:eq(8)").html();
+			$("#itemcode").val(itemcd);
+			$("#itemname").val(itemname);
+			alert($("#madename option").val());
+			$("#madename").each(function(idx,item){
+				if($(this).val()==madenmcd){
+					$(this).attr("selected","selected");
+				}
+			});
+			$("#itemunitname").each(function(){
+				if($(this).val()==itemunitcd){
+					$(this).attr("selected","selected");
+				}
+			});
+			
+		});
+		$("#show").click(function(){
+			$("#inorup").val("up");
+			$("#itemname").attr("readonly", false);
+			$("#madename").attr("readonly", false);
+			$("#itemunitname").attr("readonly", false);
+			return false;
+		});
+		$("#insert").click(function(){
+			$("#inorup").val("in");
+			$("#itemcode").parent().hide();
+			$("#itemname").val("");
+			$("#itemname").attr("readonly", false);
+			$("#madename").attr("readonly", false);
+			$("#itemunitname").attr("readonly", false);
+		});
+	});
+</script>
+</head>
+<body>
+<h1>전체리스트</h1>
+		카테고리:
+			<select id="codeSel">
+				<c:forEach var="codeVO" items="${clist }">
+				<option value="${codeVO.CDNO }">${codeVO.CDNAME}
+				</c:forEach>
+			</select>
+			
+			1차분류:
+			<select id="ajaxsel"></select>
+			
+			<input type="button" value="조회" id="itemselect">
+<table id="itemsel">
+	<thead>
+		<tr>
+			<th>상품코드
+			<th>상품명
+			<th>제조사코드
+			<th>제조사명
+			<th>단위코드
+			<th>단위명
+			<th>재고수량
+			<th>재고여부
+			<th>사용여부
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+<form action="itemList.do" method="post" id="itemFrom">
+	<table id="itemlict">
+		<tr>
+			<td>
+				<label for="itemcode">상품코드:</label>
+				<input type="text" readonly="readonly" name="itemcode" id="itemcode">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="itemname">상품명:</label>
+				<input type="text" readonly="readonly" name="itemname" id="itemname">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				제조사:<select id="madename" name="madename">
+				<c:forEach var="made" items="${clist2 }">
+					<option value="${made.MADENMCD}">${made.MADENAME }</option>
+				</c:forEach>
+				</select>
+				
+				단위명:<select id="itemunitname" name="itemunitname">
+				<c:forEach var="item" items="${clist1 }">
+					<option value="${item.ITEMUNITCD}">${item.ITEMUNITNAME }</option>
+				</c:forEach>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>사용여부:
+				<input type="checkbox" readonly="readonly" name="itemcheck" id="itemcheck" checked="checked">
+			</td>
+		</tr>
+		<tr>
+			<td><input type="hidden" name="inorup" id="inorup"readonly="readonly">
+		<tr>
+			<td><input type="hidden" name="code" id="code"readonly="readonly">
+		<tr>
+			<td>
+				<input type="button" id="insert" value="추가">
+				<input type="button" id="show" value="수정">
+				<input type="submit" id="update" value="저장">
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

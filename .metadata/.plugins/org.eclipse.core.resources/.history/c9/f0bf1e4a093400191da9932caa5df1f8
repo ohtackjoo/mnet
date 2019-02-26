@@ -1,0 +1,88 @@
+package com.nmet.nmet.member.controller;
+
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.nmet.nmet.member.model.memberService;
+import com.nmet.nmet.member.model.memberVO;
+
+@Controller
+public class joinController {
+	private static final Logger logger = LoggerFactory.getLogger(loginController.class);
+	
+	@Autowired
+	private memberService service; 
+
+	@RequestMapping(value = "/member/join.do", method = RequestMethod.GET)
+	public String joinG(Locale locale, Model model) {		
+		logger.info("유저 회원가입");
+
+		return "/member/join";	
+	}
+	@RequestMapping(value = "/member/join.do", method = RequestMethod.POST)
+	public String joinP(Locale locale, Model model,HttpServletRequest request) {		
+		logger.info("유저 회원가입");
+		String iD=request.getParameter("userid");
+		String nAME=request.getParameter("userPwd");
+		String pASS=request.getParameter("userName");
+		memberVO vo=new memberVO();
+		vo.setID(iD);
+		vo.setNAME(nAME);
+		vo.setPASS(pASS);
+		int cnt=service.insertJoin(vo);
+		
+		String msg="";
+		String url="";
+		if(cnt>0) {
+			msg="회원가입 되셨습니다. ";
+			url="detail.do";
+		}else {
+			msg="회원가입실패.";
+			url="login.do";
+		}
+	    model.addAttribute("msg",msg);
+		model.addAttribute("url",url);
+		
+		return "/member/join";	
+	}
+	
+	@RequestMapping(value = "/member/joinCheck.do", method = RequestMethod.POST,
+			produces="application/text; charset=utf-8")
+	public @ResponseBody String joinP(@RequestParam String ID,HttpServletResponse resp) throws Exception {		
+		Map<String,Object> map = new HashMap<String,Object>();
+		logger.info("유저 회원가입-ajax");
+		memberVO vo=new memberVO();
+		logger.info("ID={}",ID);
+		String msg="";
+		vo=service.selectByID(ID);
+		logger.info("vo={}",vo);
+		if(vo!=null) {
+		msg="해당 아이디를 사용하실수 없습니다.";
+		}else {
+			msg="사용가능한 아이디 입니다.";
+		}
+		map.put("msg",msg);
+		String json = "";
+		ObjectMapper mapper = new ObjectMapper();
+		json = mapper.writeValueAsString(map);
+		URLEncoder.encode(msg , "UTF-8");
+		logger.info(msg);
+		return json;	
+	}
+}

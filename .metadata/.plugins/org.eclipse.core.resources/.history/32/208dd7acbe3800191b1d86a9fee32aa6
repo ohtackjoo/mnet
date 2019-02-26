@@ -1,0 +1,104 @@
+package com.nmet.nmet.member.controller;
+
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.nmet.nmet.member.model.codemngVO;
+import com.nmet.nmet.member.model.itemVO;
+import com.nmet.nmet.member.model.memberService;
+import com.nmet.nmet.member.model.memberVO;
+
+@Controller
+public class insitemlistController {
+private static final Logger logger = LoggerFactory.getLogger(insitemlistController.class);
+	
+	@Autowired
+	private memberService service; 
+
+	@RequestMapping(value = "/member/insitemlist.do", method = RequestMethod.GET)
+	public String insitemlistG(Locale locale, Model model) {		
+		logger.info("입고관리");
+		List<codemngVO> list=service.selectItem1();
+		List<itemVO> list2=service.selectInItem();		
+		logger.info("list={}",list);
+		logger.info("list2={}",list2);
+		model.addAttribute("clist",list);
+		model.addAttribute("ilist",list2);
+		return "/member/insitemlist";	
+	}
+	@RequestMapping(value = "/member/insitemlist.do", method = RequestMethod.POST)
+	public String insitemlistP(Locale locale, Model model,HttpServletRequest request) {		
+		logger.info("입고 처리");
+		String ITEMCD=request.getParameter("ITEMCD");
+		String ITEMNAME=request.getParameter("ITEMNAME");
+		String MADENAME=request.getParameter("MADENAME");
+		String ITEMUNITNAME=request.getParameter("ITEMUNITNAME");
+		String STOCKAMT=request.getParameter("STOCKAMT");
+		String INSITEMLISTCD=request.getParameter("INSITEMLISTCD");
+		int stockamt=Integer.parseInt(STOCKAMT);
+		String inorup=request.getParameter("inorup");
+		itemVO vo= new itemVO();
+		vo.setITEMCD(ITEMCD);
+		vo.setITEMNAME(ITEMNAME);
+		vo.setMADENAME(MADENAME);
+		vo.setITEMUNITNAME(ITEMUNITNAME);
+		vo.setSTOCKAMT(STOCKAMT);
+		vo.setINSITEMLISTCD(INSITEMLISTCD);
+		int cnt=0;
+		String msg="";
+		String url="";
+		if(inorup.equals("in")) {
+			logger.info("입고 처리 입력");
+			cnt=service.insertInItem(vo);
+			cnt+=service.updateInItem(vo);
+			if(cnt>1) {
+				msg="입고처리 되었습니다.";
+				url="insitemlist.do";
+			}else {
+				msg="입고처리실패.";
+				url="insitemlist.do";
+			}
+		}else if(inorup.equals("up")){
+			cnt=0;
+			logger.info("입고 처리 수정");
+			logger.info("vo={}",vo);
+			itemVO vo2=service.selectInItem2(INSITEMLISTCD);
+			itemVO vo3=service.selectInItem3(ITEMCD);
+			stockamt=Integer.parseInt(vo3.getSTOCKAMT())-Integer.parseInt(vo2.getINSAMT())+stockamt;
+			vo.setSTOCKAMT(Integer.toString(stockamt));
+			vo.setINSAMT(Integer.toString(stockamt));
+
+			cnt=service.updateItem2(vo);
+			cnt+=service.updateInItem2(vo);
+			if(cnt>1) {
+				msg="입고수정처리 되었습니다.";
+				url="insitemlist.do";
+			}else {
+				msg="입고수정처리실패.";
+				url="insitemlist.do";
+			}
+			
+		}
+		
+	    model.addAttribute("msg",msg);
+		model.addAttribute("url",url);
+		
+		return "messge";
+	}
+}

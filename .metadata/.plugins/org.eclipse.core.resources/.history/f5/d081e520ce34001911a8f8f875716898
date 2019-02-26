@@ -1,0 +1,17 @@
+package com.nmet.nmet.member.model;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public interface memberService {
+	public memberVO checkIDandPASS(memberVO vo);
+	public memberVO selectByID(String ID);
+	public int insertJoin(memberVO vo);
+	public List<memberDetailVO> selectDetail();
+	public int insertDetail(memberDVO vo);
+	public List<codemngVO> selectCodeMng();
+	public int insertCode();
+	public int updateCode();
+}

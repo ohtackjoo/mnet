@@ -1,0 +1,74 @@
+package com.nmet.nmet.member.model;
+
+public class itemVO {
+	 private String ITEMCD;
+	 private String ITEMNAME;
+	 private String MADENMCD;
+	 private String ITEMUNITCD;
+	 private String STOCKAMT;
+	 private String STOCKYN;
+	 private String USEYN;
+	public itemVO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public itemVO(String iTEMCD, String iTEMNAME, String mADENMCD, String iTEMUNITCD, String sTOCKAMT, String sTOCKYN,
+			String uSEYN) {
+		super();
+		ITEMCD = iTEMCD;
+		ITEMNAME = iTEMNAME;
+		MADENMCD = mADENMCD;
+		ITEMUNITCD = iTEMUNITCD;
+		STOCKAMT = sTOCKAMT;
+		STOCKYN = sTOCKYN;
+		USEYN = uSEYN;
+	}
+	public String getITEMCD() {
+		return ITEMCD;
+	}
+	public void setITEMCD(String iTEMCD) {
+		ITEMCD = iTEMCD;
+	}
+	public String getITEMNAME() {
+		return ITEMNAME;
+	}
+	public void setITEMNAME(String iTEMNAME) {
+		ITEMNAME = iTEMNAME;
+	}
+	public String getMADENMCD() {
+		return MADENMCD;
+	}
+	public void setMADENMCD(String mADENMCD) {
+		MADENMCD = mADENMCD;
+	}
+	public String getITEMUNITCD() {
+		return ITEMUNITCD;
+	}
+	public void setITEMUNITCD(String iTEMUNITCD) {
+		ITEMUNITCD = iTEMUNITCD;
+	}
+	public String getSTOCKAMT() {
+		return STOCKAMT;
+	}
+	public void setSTOCKAMT(String sTOCKAMT) {
+		STOCKAMT = sTOCKAMT;
+	}
+	public String getSTOCKYN() {
+		return STOCKYN;
+	}
+	public void setSTOCKYN(String sTOCKYN) {
+		STOCKYN = sTOCKYN;
+	}
+	public String getUSEYN() {
+		return USEYN;
+	}
+	public void setUSEYN(String uSEYN) {
+		USEYN = uSEYN;
+	}
+	@Override
+	public String toString() {
+		return "itemVO [ITEMCD=" + ITEMCD + ", ITEMNAME=" + ITEMNAME + ", MADENMCD=" + MADENMCD + ", ITEMUNITCD="
+				+ ITEMUNITCD + ", STOCKAMT=" + STOCKAMT + ", STOCKYN=" + STOCKYN + ", USEYN=" + USEYN + "]";
+	}
+	 
+}

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="config.mybatis.mapper.oracle.userinfo">
+	<select id="checkIDandPASS" resultType="memberVO" parameterType="memberVO">
+  		SELECT * FROM USERINFO WHERE ID=#{ID} AND PASS=#{PASS}
+  	</select>
+	<select id="selectByID" resultType="memberVO" parameterType="String">
+  		SELECT * FROM USERINFO WHERE ID=#{ID}
+  	</select>
+  	<insert id="insertJoin" parameterType="memberVO">
+  		INSERT INTO USERINFO VALUES( #{ID}, #{PASS}, #{NAME}, sysdate, default)
+  	</insert>
+	<select id="selectDetail" resultType="memberDetailVO">
+  		SELECT * FROM EXAM_MANAGER.CODEMNG
+		where upcd='C0020'
+		order by CDNO
+  	</select>
+  	<insert id="insertdetail" parameterType="memberDVO">
+  		INSERT INTO USERINFODETAIL VALUES 
+		(  #{ID},(select CONCAT('U',lpad(SUBSTR(max(USERINFODETAILCD),2)+1,8,'0')) as USERINFODETAILCD from EXAM_MANAGER.USERINFODETAIL),
+		#{RELCD} ,#{ADDRCD} ,#{ADDRNAME} ,#{MOBILETELNO}, #{HOMETELNO},#{INSUSER} ,sysdate ,#{USEYN} ,#{DELIVNAME})
+  	</insert>
+	<select id="selectCodeMng" resultType="codemngVO">
+  		SELECT CDNO,CDLVL,UPCD,lpad(' ',1*(CDLVL))||CDNAME as CDNAME,USEYN
+		FROM CODEMNG
+		START WITH CDNO='C0000'
+		CONNECT BY NOCYCLE PRIOR CDNO=UPCD
+  	</select>
+  	<insert id="insertcode" parameterType="codemngVO">
+		INSERT INTO CODEMNG (CDNO, CDLVL, UPCD, CDNAME, INSUSER, INSDATE, USEYN)
+		VALUES ( (select CONCAT('C',lpad(SUBSTR(max(CDNO),2)+1,4,'0')) as CDNO from CODEMNG),
+		#{CDLVL} ,#{UPCD} , #{CDNAME} ,#{INSUSER} , sysdate,#{USEYN} )
+  	</insert>
+  	<update id="updateCode" parameterType="codemngVO">
+  	UPDATE CODEMNG
+	SET  
+    CDLVL   = #{CDLVL}, 
+    UPCD    = #{UPCD}, 
+    CDNAME  = #{CDNAME}, 
+    USEYN   = #{USEYN}
+	WHERE CDNO=#{CDNO}
+  	</update>
+	<select id="selectItem1" resultType="codemngVO">
+  		SELECT * FROM EXAM_MANAGER.CODEMNG where upcd='C0070'
+  		order by cdno desc
+  	</select>
+	<select id="selectItem2" resultType="codemngVO" parameterType="String">
+  		SELECT * FROM EXAM_MANAGER.CODEMNG where upcd=#{code}
+  		order by cdno
+  	</select>
+	<select id="selectItem3" resultType="itemVO" parameterType="String">
+  		SELECT 
+			ITEMCD, 
+			ITEMNAME, 
+			MADENMCD, 
+			(SELECT cdname from CODEMNG where cdno=MADENMCD) as MADENAME,
+			ITEMUNITCD, 
+			(SELECT cdname from CODEMNG where cdno=ITEMUNITCD) as ITEMUNITNAME,
+			STOCKAMT, 
+			STOCKYN, 
+			USEYN 
+		FROM EXAM_MANAGER.ITEMLIST WHERE ITEMCLSCD=#{code} 
+  	</select>
+  	<insert id="insertItem" parameterType="itemVO">
+		INSERT INTO EXAM_MANAGER.ITEMLIST (ITEMCD, ITEMNAME, MADENMCD, ITEMUNITCD, STOCKAMT,  INSUSER, INSDATE, USEYN,ITEMCLSCD)
+		VALUES ((select CONCAT('I',lpad(SUBSTR(max(ITEMCD),2)+1,4,'0')) as ITEMCD from ITEMLIST) 
+		,#{ITEMNAME} ,#{MADENMCD} ,#{ITEMUNITCD} ,10 ,'admin' ,sysdate ,#{USEYN},#{ITEMCLSCD})
+  	</insert>
+  	<update id="updateItem" parameterType="itemVO">
+  	UPDATE EXAM_MANAGER.ITEMLIST
+	SET 
+	    ITEMNAME   = #{ITEMNAME}, 
+	    MADENMCD   = #{MADENMCD}, 
+	    ITEMUNITCD = #{ITEMUNITCD}, 
+	    USEYN      = #{USEYN} 
+	WHERE ITEMCD=#{ITEMCD}
+  	</update>
+  	<select id="selectItem4" resultType="codemngVO">
+  	SELECT * from CODEMNG where UPCD='C0060'
+  	</select>
+  	<select id="selectItem5" resultType="codemngVO">
+  	SELECT * from CODEMNG where UPCD='C0050'
+  	</select>
+  	<select id="selectInItem" resultType="itemVO">
+  	SELECT 
+    initem.ITEMCD,
+    item.ITEMNAME,
+	item.MADENMCD, 
+	(SELECT cdname from CODEMNG where cdno=MADENMCD) as MADENAME,
+	item.ITEMUNITCD, 
+	(SELECT cdname from CODEMNG where cdno=ITEMUNITCD) as ITEMUNITNAME,
+	item.STOCKAMT
+    FROM INITEMLIST  initem, ITEMLIST  item where initem.ITEMCD=item.ITEMCD
+    and initem.INSDATE like CURRENT_DATE
+  	</select>
+  	<insert id="insertInItem" parameterType="itemVO">
+		INSERT INTO EXAM_MANAGER.INITEMLIST (ITEMCD, INSITEMLISTCD, INSAMT, INSDATE, INSUSER)
+		VALUES (#{ITEMCD} ,(select CONCAT('II',lpad(SUBSTR(max(INSITEMLISTCD),3)+1,8,'0'))as INSITEMLISTCD from EXAM_MANAGER.INITEMLIST) ,
+		 #{STOCKAMT}, sysdate, 'admin')
+  	</insert>
+  	<update id="updateInItem" parameterType="itemVO">
+  	UPDATE EXAM_MANAGER.ITEMLIST
+	SET 
+	    STOCKAMT   = #{STOCKAMT}
+	WHERE ITEMCD=#{ITEMCD}
+  	</update>
+  	<select id="selectInItem2" resultType="itemVO" parameterType="String">
+  	SELECT ITEMCD, INSITEMLISTCD, INSAMT as STOCKAMT, INSDATE, INSUSER FROM EXAM_MANAGER.INITEMLIST 
+  	where INSDATE like CURRENT_DATE and INSAMT=#{STOCKAMT};
+  	</select>
+  
+</mapper>

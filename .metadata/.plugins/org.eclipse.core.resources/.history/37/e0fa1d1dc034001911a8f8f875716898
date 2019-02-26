@@ -1,0 +1,57 @@
+package com.nmet.nmet.member.model;
+
+public class codemngVO {
+	private String CDNO;
+	private int CDLVL;
+	private String UPNO;
+	private String CDNAME;
+	private String USEYN;
+	public codemngVO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public codemngVO(String cDNO, int cDLVL, String uPNO, String cDNAME, String uSEYN) {
+		super();
+		CDNO = cDNO;
+		CDLVL = cDLVL;
+		UPNO = uPNO;
+		CDNAME = cDNAME;
+		USEYN = uSEYN;
+	}
+	public String getCDNO() {
+		return CDNO;
+	}
+	public void setCDNO(String cDNO) {
+		CDNO = cDNO;
+	}
+	public int getCDLVL() {
+		return CDLVL;
+	}
+	public void setCDLVL(int cDLVL) {
+		CDLVL = cDLVL;
+	}
+	public String getUPNO() {
+		return UPNO;
+	}
+	public void setUPNO(String uPNO) {
+		UPNO = uPNO;
+	}
+	public String getCDNAME() {
+		return CDNAME;
+	}
+	public void setCDNAME(String cDNAME) {
+		CDNAME = cDNAME;
+	}
+	public String getUSEYN() {
+		return USEYN;
+	}
+	public void setUSEYN(String uSEYN) {
+		USEYN = uSEYN;
+	}
+	@Override
+	public String toString() {
+		return "codemngVO [CDNO=" + CDNO + ", CDLVL=" + CDLVL + ", UPNO=" + UPNO + ", CDNAME=" + CDNAME + ", USEYN="
+				+ USEYN + "]";
+	}
+	
+}
